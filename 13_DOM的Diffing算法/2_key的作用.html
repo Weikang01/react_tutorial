@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2_key的作用</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    /*
+    经典面试题
+    1. key的作用
+        1. 简单的说: key是react中用于追踪哪些元素被修改了的一种机制
+        2. 更准确的说: key是在react diff算法中用于对比新旧虚拟DOM的一种优化手段
+
+        a. 旧虚拟DOM中找到了与新虚拟DOM相同的key:
+            (1). 若虚拟DOM中内容没变, 直接使用之前的真实DOM
+            (2). 若虚拟DOM中内容变了, 则生成新的真实DOM, 并替换掉页面中之前的真实DOM
+        b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
+            根据数据创建新的真实DOM, 并渲染到页面
+
+    2. 用index作为key可能会引发的问题
+        a. 若对数据进行: 逆序添加、逆序删除等破坏顺序操作:
+            会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低
+        b. 如果结构中还包含输入类的DOM:
+            会产生错误DOM更新 ==> 界面有问题
+        c. 注意: 在项目中, 千万不要使用index作为key
+
+    3. 开发中如何选择key?
+        a. 最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值
+        b. 如果确定只是简单的展示数据, 用index也是可以的
+     */
+
+    /*
+    慢动作回放 ---使用index索引值作为key
+
+    数据：
+        {id: 1, name: 'tom', age: 18},
+        {id: 2, name: 'jack', age: 19},
+        {id: 3, name: 'peiqi', age: 20},
+    初始的虚拟DOM：
+        <li key=0>姓名: tom 年龄: 18</li>
+        <li key=1>姓名: jack 年龄: 19</li>
+        <li key=2>姓名: peiqi 年龄: 20</li>
+
+    更新后的虚拟DOM：
+        <li key=0>姓名: rose 年龄: 21</li>
+        <li key=1>姓名: tom 年龄: 18</li>
+        <li key=2>姓名: jack 年龄: 19</li>
+        <li key=3>姓名: peiqi 年龄: 20</li>
+
+     */
+    const root = ReactDOM.createRoot(document.getElementById('test'))
+
+    class Person extends React.Component {
+        render() {
+            return (
+                <li>
+                    姓名: {this.props.name} 年龄: {this.props.age} <input type="text"/>
+                </li>
+            )
+        }
+    }
+
+    class PeopleList extends React.Component {
+        state = {
+            people: [
+                {id: 1, name: 'tom', age: 18},
+                {id: 2, name: 'jack', age: 19},
+                {id: 3, name: 'peiqi', age: 20},
+            ]
+        }
+
+        addPerson = () => {
+            const p = {id: this.state.people.length + 1, name: 'rose', age: 21}
+            // const newPeople = this.state.people
+            // newPeople.unshift(p)
+            // this.setState({
+            //     people: newPeople
+            // })
+            this.setState({
+                people: [p, ...this.state.people]
+            })
+        }
+
+        render() {
+            return (
+                <div>
+                    <h2>名单</h2>
+                    <ul>
+                        {
+                            this.state.people.map((p, index) => {
+                                return <Person key={p.id} name={p.name} age={p.age}/>
+                            })
+                        }
+                    </ul>
+                    <button onClick={this.addPerson}>添加一个人</button>
+                </div>
+            )
+        }
+    }
+
+    root.render(<PeopleList/>)
+
+</script>
+</body>
+</html>

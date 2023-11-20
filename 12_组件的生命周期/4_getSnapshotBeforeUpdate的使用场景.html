@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>4_getSnapshotBeforeUpdate的使用场景</title>
+    <style>
+        .list {
+            padding: 0;
+            width: 200px;
+            height: 150px;
+            overflow: auto;
+        }
+
+        .list, ul, li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .news {
+            background-color: aqua;
+            height: 30px;
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    /*
+    新生命周期总结
+    1. 挂载时
+        constructor()
+        static getDerivedStateFromProps()
+        render()
+        componentDidMount()
+    2. 更新时
+        static getDerivedStateFromProps()
+        shouldComponentUpdate()
+        render()
+        getSnapshotBeforeUpdate()
+        componentDidUpdate()
+    3. 卸载时
+        componentWillUnmount()
+     */
+    const root = ReactDOM.createRoot(document.getElementById('test'))
+
+    // 创建组件
+    class NewsList extends React.Component {
+
+        state = {
+            newsArr: []
+        }
+
+        componentDidMount() {
+            // 模拟发送ajax请求异步获取数据
+            setInterval(() => {
+                const {newsArr} = this.state
+                // console.log('发送ajax请求，获取最新的新闻数据');
+                const news = `news${newsArr.length + 1}`
+                this.setState({newsArr: [news, ...newsArr]})
+            }, 1000)
+        }
+
+        getSnapshotBeforeUpdate() {
+            // 返回值会作为componentDidUpdate的第三个参数
+            return this.refs.list.scrollHeight
+        }
+
+        render() {
+            return (
+                <div className="list" ref="list">
+                    <ul>
+                        {
+                            this.state.newsArr.map((news, index) => <li key={index} className="news">{news}</li>)
+                        }
+                    </ul>
+                </div>
+            )
+        }
+
+        componentDidUpdate(prevProps, prevState, snapshot) {
+            // console.log('componentDidUpdate(', prevProps, prevState, snapshot, `)`)
+            this.refs.list.scrollTop += this.refs.list.scrollHeight - snapshot
+        }
+    }
+
+    // 渲染组件
+    root.render(<NewsList/>)
+</script>
+</body>
+</html>
