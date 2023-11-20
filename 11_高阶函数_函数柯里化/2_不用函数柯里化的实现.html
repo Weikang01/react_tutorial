@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2_不用函数柯里化的实现</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    // 创建组件
+    class Login extends React.Component {
+
+        // 初始化状态
+        state = {
+            username: '',
+            password: ''
+        }
+
+        handleSubmit = (event) => {
+            event.preventDefault(); // 阻止表单提交的默认行为
+            const {username, password} = this.state;
+            alert(`你输入的用户名是：${username}，密码是：${password}`)
+        };
+
+        updateFormData = (item, event) => {
+            this.setState({[item]: event.target.value})
+        }
+
+        render() {
+            return (
+                <form action="https://zh.wikipedia.org/" method="get" onSubmit={this.handleSubmit}>
+                    用户名：<input onChange={(event)=>{this.updateFormData('username', event)}} type="text" name="username"
+                                  placeholder="请输入用户名"/><br/>
+                    密码：<input onChange={(event)=>{this.updateFormData('password', event)}} type="password" name="password"
+                                placeholder="请输入密码"/><br/>
+                    <input type="submit" value="登录"/>
+                </form>
+            )
+        }
+    }
+
+    // 渲染组件
+    ReactDOM.createRoot(document.getElementById('test1')).render(<Login/>)
+</script>
+</body>
+</html>

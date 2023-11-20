@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2_react生命周期（旧）</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById('test'))
+
+    // 创建组件
+    class Counter extends React.Component {
+
+        constructor(props) {
+            console.log('constructor()');
+            super(props);
+            // 初始化状态
+            this.state = {count: 0}
+        }
+
+
+        // 加法
+        add = () => {
+            this.setState(state => ({count: state.count + 1}))
+        }
+
+        // 卸载组件
+        remove = () => {
+            root.unmount()
+        }
+
+        // 组件将要挂载
+        componentWillMount() {
+            console.log('componentWillMount()')
+        }
+
+        // 组件挂载完成
+        componentDidMount() {
+            console.log('componentDidMount()')
+        }
+
+        render() {
+            console.log('render()');
+            return (
+                <div>
+                    <h1>当前求和为：{this.state.count}</h1>
+                    <button onClick={this.add}>点我+1</button>
+                    <button onClick={this.remove}>卸载组件</button>
+                </div>
+            )
+        }
+
+        // 组件将要卸载
+        componentWillUnmount() {
+            console.log('componentWillUnmount()')
+        }
+
+        // 组件将要接收新的props数据
+        componentWillReceiveProps() {
+            console.log('componentWillReceiveProps()')
+        }
+
+        // 组件是否应该更新
+        shouldComponentUpdate() {
+            console.log('shouldComponentUpdate()')
+            return true
+        }
+
+        // 组件将要更新
+        componentWillUpdate() {
+            console.log('componentWillUpdate()')
+        }
+
+        // 组件更新完成
+        componentDidUpdate() {
+            console.log('componentDidUpdate()')
+        }
+    }
+
+    // 渲染组件
+    root.render(<Counter/>)
+</script>
+</body>
+</html>

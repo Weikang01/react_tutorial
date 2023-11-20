@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2_对props进行限制</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+<div id="test2"></div>
+<div id="test3"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+<!-- 引入prop-types 用于对props进行限制-->
+<script src="../lib/prop-types.js"></script>
+
+<script type="text/babel">
+    // 创建组件
+    class Person extends React.Component {
+        render() {
+            const {name, sex, age} = this.props
+            return (
+                <ul>
+                    <li>姓名：{name}</li>
+                    <li>性别：{sex}</li>
+                    <li>年龄：{age + 1}</li>
+                </ul>
+            )
+        }
+    }
+
+    // 对props进行限制
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,  // 必传且必须是字符串
+        sex: PropTypes.string,  // 字符串，非必传
+        age: PropTypes.number,  // 数字，非必传
+        say: PropTypes.func  // 函数，非必传
+    }
+
+    Person.defaultProps = {
+        sex: 'unknown',  // 默认值
+        age: 0  // 默认值
+    }
+
+    const p3 = {name: "jack", age: 15, sex: 'male'}
+
+    // 渲染组件
+    // ReactDOM.render(<Person name="tom" sex="male" age="18"/>, document.getElementById('test'))
+    const test1 = ReactDOM.createRoot(document.getElementById('test1'))
+    test1.render(<Person name="jenny" age={19} say={say}/>)
+    const test2 = ReactDOM.createRoot(document.getElementById('test2'))
+    test2.render(<Person name="tom" sex="male"/>)
+    const test3 = ReactDOM.createRoot(document.getElementById('test3'))
+    test3.render(<Person {...p3}/>)
+
+    function  say(){
+        console.log('hello');
+    }
+</script>
+</body>
+</html>

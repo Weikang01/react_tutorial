@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3_类中方法this指向</title>
+</head>
+<body>
+<script>
+    class Person {
+        constructor(name, age) {
+            this.name = name
+            this.age = age
+        }
+
+        say() {
+            console.log(this)
+        }
+    }
+
+    const p = new Person('jack', 18)
+    p.say()  // Person {name: "jack", age: 18}  通过实例调用方法，方法中的this指向实例对象
+    const x = p.say
+    x()  // undefined  通过类调用方法，方法中的this指向undefined
+</script>
+</body>
+</html>

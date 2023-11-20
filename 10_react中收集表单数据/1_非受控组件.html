@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1_非受控组件</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    // 创建组件
+    class Login extends React.Component {
+        handleSubmit = (event) => {
+            event.preventDefault(); // 阻止表单提交的默认行为
+            const {username, password} = this;
+            alert(`你输入的用户名是：${username.value}，密码是：${password.value}`)
+        };
+
+        render() {
+            return (
+                <form action="https://zh.wikipedia.org/" method="get" onSubmit={this.handleSubmit}>
+                    用户名：<input ref={c => this.username = c} type="text" name="username" placeholder="请输入用户名"/><br/>
+                    密码：<input ref={c => this.password = c} type="password" name="password" placeholder="请输入密码"/><br/>
+                    <input type="submit" value="登录"/>
+                </form>
+            )
+        }
+    }
+
+    // 渲染组件
+    ReactDOM.createRoot(document.getElementById('test1')).render(<Login/>)
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>state</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    class Weather extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                isHot: true,
+                wind: '微风'
+            }
+            this.changeWeather = this.changeWeather.bind(this)
+        }
+
+        // 事件处理函数
+        changeWeather() {
+            // this指向的是undefined
+            // 因为changeWeather不是由Weather实例调用的，而是由Weather类调用的
+            // 由于changeWeather是作为onClick的回调函数，所以不是由Weather实例调用的，而是直接由Weather类调用的
+            // 类中的方法默认开启了严格模式，所以this指向undefined
+            // 状态不可直接修改，下面的代码是错误的
+            // this.state.isHot = !this.state.isHot
+            // 要用setState修改状态
+            // setState是异步的，所以要用回调函数
+            this.setState({
+                isHot: !this.state.isHot
+            })
+            // console.log(this.state.isHot)
+        }
+
+        render() {
+            // console.log(this)
+            const {isHot, wind} = this.state
+            return <h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'}，{wind}</h1>
+        }
+    }
+
+    ReactDOM.render(<Weather/>, document.getElementById('test'))
+
+    // const title = document.getElementById('title')
+    // title.addEventListener('click', function () {
+    //     // this指向的是title
+    //     console.log(this)
+    // })
+
+    // const title = document.getElementById('title')
+    // title.onclick = function () {
+    //     // this指向的是title
+    //     console.log(this)
+    // }
+
+    // function changeWeather() {
+    //     console.log(that.state.isHot)
+    // }
+</script>
+</body>
+</html>

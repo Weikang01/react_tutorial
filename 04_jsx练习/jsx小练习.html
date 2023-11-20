@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsx小练习</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    /*
+    注意区分：【js语句】和【js表达式】
+    1. js表达式：用于表示某个值的代码，一般情况下，表达式后面不加分号
+        下面这些都是表达式：
+            1. a
+            2. a+b
+            3. demo(1)
+            4. arr.map()
+            5. function fn(){}
+    2. js语句：用于完成某个行为的代码，一般情况下，语句后面加分号
+        下面这些都是语句：
+            1. if(){}
+            2. for(){}
+            3. switch(){}
+     */
+    // 模拟数据
+    const data = ['React', 'Vue', 'Angular']
+
+    const VDOM = (
+        <div>
+            <h1 id="title">
+                前端js框架列表
+            </h1>
+            <ul>
+                {
+                    data.map((item, index) => {
+                        return <li key={index}>{item}</li>
+                    })
+                }
+            </ul>
+        </div>
+    )
+    ReactDOM.render(VDOM, document.getElementById('test'))
+</script>
+
+</body>
+</html>

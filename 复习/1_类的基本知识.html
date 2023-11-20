@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1_类的基本知识</title>
+</head>
+<body>
+<script type="text/javascript">
+    class Person {
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        say() {
+            console.log(`大家好，我是${this.name}，今年${this.age}岁了`)
+        }
+    }
+
+    // 创建一个Student类，继承自Person
+    class Student extends Person {
+        constructor(name, age, score) {
+            super(name, age)
+            this.score = score
+        }
+
+        say() {
+            console.log(`大家好，我是${this.name}，今年${this.age}岁了，我的成绩是${this.score}`)
+        }
+    }
+
+    // 创建一个Person的实例对象
+    const p1 = new Person('tom', 18)
+    const p2 = new Person('jack', 20)
+    console.log(p1)
+    console.log(p2)
+    p1.say()
+    p2.say()
+    p1.say.call({name: 'rose', age: 19})
+
+    // 创建一个Student的实例对象
+    const s1 = new Student('tom', 18, 100)
+    console.log(s1)
+    s1.say()
+
+    class Car {
+        // 如下代码的含义是：给Car类添加一个静态属性a，值为1
+        a = 1
+        wheel = 4
+
+        constructor(brand, price) {
+            this.brand = brand
+            this.price = price
+        }
+
+        static demo = 100
+    }
+
+    const c1 = new Car('宝马', 100)
+    console.log(c1)
+</script>
+</body>
+</html>

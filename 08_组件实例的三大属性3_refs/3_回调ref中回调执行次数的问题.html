@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3_回调ref中回调执行次数的问题</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    // 创建组件
+    class Demo extends React.Component {
+
+        show = () => {
+            // 获取输入的数据
+            const {value} = this.input1
+            this.setState({}) // 为了让页面重新渲染
+            this.input1.value = '' // 清空输入
+        }
+
+        saveInput1 = (currentNode) => {
+            console.log('hello, ', currentNode)
+            this.input1 = currentNode
+        }
+
+        render() {
+            return (
+                <div>
+                    {/*<input type="text" ref={(currentNode) => {this.input1 = currentNode; console.log('hello, ', currentNode)}}/>*/}
+                    <input type="text" ref={this.saveInput1s}/>
+                    <button onClick={this.show}>点我提示输入的数据</button>
+                </div>
+
+            )
+        }
+    }
+
+    // 渲染组件
+    ReactDOM.createRoot(document.getElementById('test1')).render(<Demo/>)
+</script>
+</body>
+</html>

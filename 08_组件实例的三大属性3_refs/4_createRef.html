@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>4_createRef</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    // 创建组件
+    class Demo extends React.Component {
+        /* 1. 创建ref容器，该容器可以存储被ref所标识的节点，该容器是专人专用的 */
+        myRef = React.createRef()
+        myRef2 = React.createRef()
+
+        showData = () => {
+            console.log(this.myRef.current.value)
+        };
+        showData2 = () => {
+            this.myRef.current.value = this.myRef2.current.value
+        };
+
+        render() {
+            return (
+                <div>
+                    <input ref={this.myRef} type="text" placeholder="点击按钮提示数据"/>&nbsp;&nbsp;
+                    <button onClick={this.showData}>点我提示左侧的数据</button>
+                    <input onBlur={this.showData2} ref={this.myRef2} type="text"
+                           placeholder="失去焦点提示数据"/>&nbsp;&nbsp;
+                </div>
+            )
+        }
+    }
+
+    // 渲染组件
+    ReactDOM.createRoot(document.getElementById('test1')).render(<Demo/>)
+</script>
+</body>
+</html>

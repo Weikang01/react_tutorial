@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1_引出生命周期</title>
+</head>
+<body>
+<!--  准备好一个容器  -->
+<div id="test1"></div>
+
+<!-- 引入react 核心库-->
+<script src="../lib/react.development.js"></script>
+<!-- 引入react-dom 用于支持react操作DOM-->
+<script src="../lib/react-dom.development.js"></script>
+<!-- 引入babel 用于将jsx转为js-->
+<script src="../lib/babel.min.js"></script>
+
+<script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById('test1'))
+
+    // 创建组件
+    class LifeCycle extends React.Component {
+        state = {
+            opacity: 0.99
+        }
+        kill = () => {
+            // 卸载组件
+            root.unmount()
+        }
+
+        // 组件挂载完成的钩子
+        componentDidMount() {
+            console.log('组件挂载完成的钩子')
+            this.timer = setInterval(() => {
+                let {opacity} = this.state
+                opacity -= 0.1
+                if (opacity <= 0) opacity = 1
+                this.setState({opacity: opacity})
+            }, 200)
+        }
+
+        // 组件卸载前的钩子
+        componentWillUnmount() {
+            console.log('组件卸载前的钩子')
+            clearInterval(this.timer)
+        }
+
+        render() {
+            return (
+                <div>
+                    <h2 style={{opacity:this.state.opacity}}>React学不会怎么办？</h2>
+                    <button onClick={this.kill}>不会</button>
+                </div>
+            )
+        }
+    }
+
+    // 渲染组件
+    root.render(<LifeCycle/>)
+</script>
+</body>
+</html>
