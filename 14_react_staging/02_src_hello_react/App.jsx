@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import Hello from './components/Hello';
 
-export default class Index extends Component {
+export default class App extends Component {
     render() {
         return (
             <div>
-                <h2>Hello</h2>
+                <Hello/>
             </div>
         );
     }
 }
+
