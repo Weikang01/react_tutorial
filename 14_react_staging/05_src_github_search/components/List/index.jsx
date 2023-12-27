@@ -1,34 +1,13 @@
 import React, { Component } from "react";
-import PubSub from "pubsub-js";
+import { AppPhaseEnum } from "../../App";
 import "./index.css";
 
-export const AppPhaseEnum = {
-  initial: 0,
-  loading: 1,
-  listing: 2,
-  error: 3,
-};
-
 export default class List extends Component {
-  state = {
-    users: [],
-    appPhase: AppPhaseEnum.initial,
-    errorMsg: "",
-  };
-
-  componentDidMount() {
-    this.token = PubSub.subscribe("listState", (_, stateObj) => {
-      console.log(stateObj);
-      this.setState(stateObj);
-    });
-  }
-
-  componentWillUnmount() {
-    PubSub.unsubscribe(this.token);
-  }
-
   render() {
-    const { users, appPhase, errorMsg } = this.state;
+    const {
+      appState: { users, error },
+      appPhase,
+    } = this.props;
 
     if (appPhase === AppPhaseEnum.listing) {
       return (
@@ -64,9 +43,7 @@ export default class List extends Component {
     } else if (appPhase === AppPhaseEnum.error) {
       return (
         <div className="row">
-          <h4 style={{ color: "#ff0000", verticalAlign: "center" }}>
-            {errorMsg}
-          </h4>
+          <h4 style={{ color: "#ff0000", verticalAlign: "center" }}>{error}</h4>
         </div>
       );
     }

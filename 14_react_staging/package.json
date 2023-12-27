@@ -9,6 +9,8 @@
     "axios": "^1.6.2",
     "cors": "^2.8.5",
     "nanoid": "^5.0.4",
+    "pubsub": "^3.2.1",
+    "pubsub-js": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

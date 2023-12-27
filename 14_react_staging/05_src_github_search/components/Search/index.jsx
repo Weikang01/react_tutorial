@@ -1,23 +1,21 @@
 import React, { Component } from "react";
-import PubSub from "pubsub-js";
 import axios from "axios";
 
-import { AppPhaseEnum } from "../List/index";
+import { AppPhaseEnum } from "../../App";
 
 export default class Search extends Component {
-  search = () => {
-    PubSub.publish("listState", { appPhase: AppPhaseEnum.loading });
+  search = (updateAppState) => {
     const {
       keywordElement: { value: keyword },
     } = this;
 
-    // updateAppState({ phase: AppPhaseEnum.loading });
+    updateAppState({ phase: AppPhaseEnum.loading });
 
     axios.get(`http://localhost:3000/api/users?q=${keyword}`).then(
       (response) => {
         console.log("成功了");
         let user_list = response.data.items;
-        user_list = user_list.map((item) => {
+        let user_map = user_list.map((item) => {
           return {
             id: item["id"],
             login: item["login"],
@@ -25,19 +23,11 @@ export default class Search extends Component {
             url: item["html_url"],
           };
         });
-        PubSub.publish("listState", {
-          users: user_list,
-          appPhase: AppPhaseEnum.listing,
-        });
-        // updateAppState({ users: user_map, phase: AppPhaseEnum.listing });
+        updateAppState({ users: user_map, phase: AppPhaseEnum.listing });
       },
       (error) => {
         console.log("失败了", error);
-        PubSub.publish("listState", {
-          appPhase: AppPhaseEnum.error,
-          errorMsg: error.message,
-        });
-        // updateAppState({ phase: AppPhaseEnum.error, error: error.message });
+        updateAppState({ phase: AppPhaseEnum.error, error: error.message });
       }
     );
   };
@@ -55,7 +45,7 @@ export default class Search extends Component {
           &nbsp;
           <button
             onClick={() => {
-              this.search();
+              this.search(this.props.updateAppState);
             }}
           >
             Search
