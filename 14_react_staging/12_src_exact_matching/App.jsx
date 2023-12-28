@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import About from "./pages/About"; // 路由组件
 import Home from "./pages/Home";
@@ -39,10 +39,6 @@ export default class App extends Component {
                   <Route exact={true} path="/demo/about" element={<About />} />
                   <Route exact path="/demo/test" element={<Test />} />
                   <Route path="/demo/home" element={<Home />} />
-                  <Route
-                    path="/"
-                    element={<Navigate replace to="/demo/home" />}
-                  />
                 </Routes>
               </div>
             </div>
